@@ -3,29 +3,30 @@ services:
     image: bitnami/php-fpm
   wordpress:
     image: wordpress
-    restart: always
+    # restart: always
     ports:
       - 8080:80
     environment:
-      WORDPRESS_DB_HOST: db
-      WORDPRESS_DB_USER: exampleuser
-      WORDPRESS_DB_PASSWORD: examplepass
-      WORDPRESS_DB_NAME: exampledb
+      WORDPRESS_DB_HOST: database
+      WORDPRESS_DB_USER: eureka
+      WORDPRESS_DB_PASSWORD: eureka
+      WORDPRESS_DB_NAME: software-systems-website
     volumes:
-      - wordpress:/var/www/html
-  db:
+      - type: bind
+        source: ./wordpress
+        target: /var/www/html
+  database:
     image: mysql:lts
-    restart: always
+    # restart: always
     environment:
-      MYSQL_DATABASE: exampledb
-      MYSQL_USER: exampleuser
-      MYSQL_PASSWORD: examplepass
+      MYSQL_DATABASE: eureka
+      MYSQL_USER: eureka
+      MYSQL_PASSWORD: eureka
       MYSQL_RANDOM_ROOT_PASSWORD: '1'
     volumes:
-      - db:/var/lib/mysql
-
+      - type: bind
+        source: ./database
+        target: /var/lib/mysql
 volumes:
     wordpress:
-    db:
-
-networks:
+    database:
